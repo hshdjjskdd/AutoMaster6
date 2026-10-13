@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, SecretStr, ValidationError, field_va
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_FILE = BASE_DIR / ".env"
-DEFAULT_DATABASE_PATH = BASE_DIR / "data" / "auto_master.db"
+DEFAULT_DATABASE_PATH = Path("/data/auto_master.db")
 
 _TOKEN_PATTERN = re.compile(r"\d{3,}:[A-Za-z0-9_-]{20,}")
 _LOG_LEVELS = frozenset({"CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"})
