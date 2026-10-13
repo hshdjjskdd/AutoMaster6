@@ -1,0 +1,15 @@
+services:
+  bot:
+    build: .
+    container_name: auto_master
+    restart: unless-stopped
+    # Запускает бота под init-процессом: docker stop корректно останавливает Python.
+    init: true
+    # BOT_TOKEN и остальные настройки берутся из файла .env рядом с этим файлом.
+    env_file: .env
+    volumes:
+      # Именованный том: база данных переживает пересборку и обновление контейнера.
+      - auto_master_data:/app/data
+
+volumes:
+  auto_master_data:

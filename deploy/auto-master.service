@@ -1,0 +1,31 @@
+# systemd-юнит для запуска бота на VPS без Docker.
+# Установка: см. раздел «Запуск на VPS через systemd» в README.md.
+
+[Unit]
+Description=AUTO MASTER Telegram bot
+After=network-online.target
+Wants=network-online.target
+# Не перезапускаться бесконечно при неверном токене или сломанной конфигурации.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=automaster
+Group=automaster
+WorkingDirectory=/opt/auto_master
+# Файл .env содержит BOT_TOKEN, права на него: chmod 600, владелец automaster.
+EnvironmentFile=/opt/auto_master/.env
+ExecStart=/opt/auto_master/.venv/bin/python main.py
+Restart=on-failure
+RestartSec=5
+
+# Минимальная изоляция: запись разрешена только в папку с базой данных.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/auto_master/data
+
+[Install]
+WantedBy=multi-user.target
